@@ -1,0 +1,1504 @@
+\documentclass[11pt]{article}
+
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+    
+    \usepackage{iftex}
+    \ifPDFTeX
+    	\usepackage[T1]{fontenc}
+    	\usepackage{mathpazo}
+    \else
+    	\usepackage{fontspec}
+    \fi
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range
+    \makeatletter % fix for grffile with XeLaTeX
+    \def\Gread@@xetex#1{%
+      \IfFileExists{"\Gin@base".bb}%
+      {\Gread@eps{\Gin@base.bb}}%
+      {\Gread@@xetex@aux#1}%
+    }
+    \makeatother
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{DV0101EN-3-5-1-Generating-Maps-in-Python-py-v2.0}
+    
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@fm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sa\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@dl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ch\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cpf\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb. 
+    \makeatletter
+        \newbox\Wrappedcontinuationbox 
+        \newbox\Wrappedvisiblespacebox 
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}} 
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}} 
+        \newcommand*\Wrappedcontinuationindent {3ex } 
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox} 
+        % Take advantage of the already applied Pygments mark-up to insert 
+        % potential linebreaks for TeX processing. 
+        %        {, <, #, %, $, ' and ": go to next line. 
+        %        _, }, ^, &, >, - and ~: stay at end of broken line. 
+        % Use of \textquotesingle for straight quote. 
+        \newcommand*\Wrappedbreaksatspecials {% 
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}% 
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}% 
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}% 
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}% 
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}% 
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}% 
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}% 
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}% 
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}% 
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}% 
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}% 
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}% 
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}% 
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}% 
+        } 
+        % Some characters . , ; ? ! / are not pygmentized. 
+        % This macro makes them "active" and they will insert potential linebreaks 
+        \newcommand*\Wrappedbreaksatpunct {% 
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}% 
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}% 
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}% 
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}% 
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}% 
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}% 
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}% 
+            \catcode`\.\active
+            \catcode`\,\active 
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active 
+            \lccode`\~`\~ 	
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+        
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active 	
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+    
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        \ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+\begin{document}
+    
+    \maketitle
+    
+    
+
+    
+    Generating Maps with Python
+
+    \hypertarget{introduction}{%
+\subsection{Introduction}\label{introduction}}
+
+In this lab, we will learn how to create maps for different objectives.
+To do that, we will part ways with Matplotlib and work with another
+Python visualization library, namely \textbf{Folium}. What is nice about
+\textbf{Folium} is that it was developed for the sole purpose of
+visualizing geospatial data. While other libraries are available to
+visualize geospatial data, such as \textbf{plotly}, they might have a
+cap on how many API calls you can make within a defined time frame.
+\textbf{Folium}, on the other hand, is completely free.
+
+    \hypertarget{table-of-contents}{%
+\subsection{Table of Contents}\label{table-of-contents}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Section \ref{0}
+\item
+  Section \ref{2}
+\item
+  Section \ref{4}
+\item
+  Section \ref{6}
+\item
+  Section \ref{8}
+\end{enumerate}
+
+    \hypertarget{exploring-datasets-with-pandas-and-matplotlib}{%
+\section{\texorpdfstring{Exploring Datasets with \emph{pandas} and
+Matplotlib}{Exploring Datasets with pandas and Matplotlib}}\label{exploring-datasets-with-pandas-and-matplotlib}}
+
+Toolkits: This lab heavily relies on
+\href{http://pandas.pydata.org/}{\emph{pandas}} and
+\href{http://www.numpy.org/}{\textbf{Numpy}} for data wrangling,
+analysis, and visualization. The primary plotting library we will
+explore in this lab is
+\href{https://github.com/python-visualization/folium/}{\textbf{Folium}}.
+
+Datasets:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  San Francisco Police Department Incidents for the year 2016 -
+  \href{https://data.sfgov.org/Public-Safety/Police-Department-Incidents-Previous-Year-2016-/ritf-b9ki}{Police
+  Department Incidents} from San Francisco public data portal. Incidents
+  derived from San Francisco Police Department (SFPD) Crime Incident
+  Reporting system. Updated daily, showing data for the entire year of
+  2016. Address and location has been anonymized by moving to mid-block
+  or to an intersection.
+\item
+  Immigration to Canada from 1980 to 2013 -
+  \href{http://www.un.org/en/development/desa/population/migration/data/empirical2/migrationflows.shtml}{International
+  migration flows to and from selected countries - The 2015 revision}
+  from United Nation's website. The dataset contains annual data on the
+  flows of international migrants as recorded by the countries of
+  destination. The data presents both inflows and outflows according to
+  the place of birth, citizenship or place of previous / next residence
+  both for foreigners and nationals. For this lesson, we will focus on
+  the Canadian Immigration data
+\end{enumerate}
+
+    \hypertarget{downloading-and-prepping-data}{%
+\section{\texorpdfstring{Downloading and Prepping Data
+}{Downloading and Prepping Data }}\label{downloading-and-prepping-data}}
+
+    Import Primary Modules:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{1}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}  \PY{c+c1}{\PYZsh{} useful for many scientific computing in Python}
+\PY{k+kn}{import} \PY{n+nn}{pandas} \PY{k}{as} \PY{n+nn}{pd} \PY{c+c1}{\PYZsh{} primary data structure library}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{introduction-to-folium}{%
+\section{\texorpdfstring{Introduction to Folium
+}{Introduction to Folium }}\label{introduction-to-folium}}
+
+    Folium is a powerful Python library that helps you create several types
+of Leaflet maps. The fact that the Folium results are interactive makes
+this library very useful for dashboard building.
+
+From the official Folium documentation page:
+
+\begin{quote}
+Folium builds on the data wrangling strengths of the Python ecosystem
+and the mapping strengths of the Leaflet.js library. Manipulate your
+data in Python, then visualize it in on a Leaflet map via Folium.
+\end{quote}
+
+\begin{quote}
+Folium makes it easy to visualize data that's been manipulated in Python
+on an interactive Leaflet map. It enables both the binding of data to a
+map for choropleth visualizations as well as passing Vincent/Vega
+visualizations as markers on the map.
+\end{quote}
+
+\begin{quote}
+The library has a number of built-in tilesets from OpenStreetMap,
+Mapbox, and Stamen, and supports custom tilesets with Mapbox or
+Cloudmade API keys. Folium supports both GeoJSON and TopoJSON overlays,
+as well as the binding of data to those overlays to create choropleth
+maps with color-brewer color schemes.
+\end{quote}
+
+    \hypertarget{lets-install-folium}{%
+\paragraph{\texorpdfstring{Let's install
+\textbf{Folium}}{Let's install Folium}}\label{lets-install-folium}}
+
+    \textbf{Folium} is not available by default. So, we first need to
+install it before we are able to import it.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{2}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{!}conda install \PYZhy{}c conda\PYZhy{}forge \PY{n+nv}{folium}\PY{o}{=}\PY{l+m}{0}.5.0 \PYZhy{}\PYZhy{}yes
+\PY{k+kn}{import} \PY{n+nn}{folium}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Folium installed and imported!}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Solving environment: done
+
+
+==> WARNING: A newer version of conda exists. <==
+  current version: 4.5.11
+  latest version: 4.8.0
+
+Please update conda by running
+
+    \$ conda update -n base -c defaults conda
+
+
+
+\#\# Package Plan \#\#
+
+  environment location: /home/jupyterlab/conda/envs/python
+
+  added / updated specs:
+    - folium=0.5.0
+
+
+The following packages will be downloaded:
+
+    package                    |            build
+    ---------------------------|-----------------
+    scikit-learn-0.20.1        |   py36h22eb022\_0         5.7 MB
+    certifi-2019.11.28         |           py36\_0         149 KB  conda-forge
+    liblapack-3.8.0            |      11\_openblas          10 KB  conda-forge
+    liblapacke-3.8.0           |      11\_openblas          10 KB  conda-forge
+    libopenblas-0.3.6          |       h5a2b251\_2         7.7 MB
+    numpy-1.17.3               |   py36h95a1406\_0         5.2 MB  conda-forge
+    scipy-1.4.1                |   py36h921218d\_0        18.9 MB  conda-forge
+    libcblas-3.8.0             |      11\_openblas          10 KB  conda-forge
+    libblas-3.8.0              |      11\_openblas          10 KB  conda-forge
+    blas-2.11                  |         openblas          10 KB  conda-forge
+    ------------------------------------------------------------
+                                           Total:        37.7 MB
+
+The following NEW packages will be INSTALLED:
+
+    libblas:      3.8.0-11\_openblas                      conda-forge
+    libcblas:     3.8.0-11\_openblas                      conda-forge
+    liblapack:    3.8.0-11\_openblas                      conda-forge
+    liblapacke:   3.8.0-11\_openblas                      conda-forge
+    libopenblas:  0.3.6-h5a2b251\_2
+
+The following packages will be UPDATED:
+
+    blas:         1.1-openblas                           conda-forge -->
+2.11-openblas         conda-forge
+    certifi:      2019.9.11-py36\_0                       conda-forge -->
+2019.11.28-py36\_0     conda-forge
+    numpy:        1.16.2-py36\_blas\_openblash1522bff\_0    conda-forge
+[blas\_openblas] --> 1.17.3-py36h95a1406\_0 conda-forge
+    scipy:        1.2.1-py36\_blas\_openblash1522bff\_0     conda-forge
+[blas\_openblas] --> 1.4.1-py36h921218d\_0  conda-forge
+
+The following packages will be DOWNGRADED:
+
+    scikit-learn: 0.20.1-py36\_blas\_openblashebff5e3\_1200 conda-forge
+[blas\_openblas] --> 0.20.1-py36h22eb022\_0
+
+
+Downloading and Extracting Packages
+scikit-learn-0.20.1  | 5.7 MB    | \#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\# | 100\%
+certifi-2019.11.28   | 149 KB    | \#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\# | 100\%
+liblapack-3.8.0      | 10 KB     | \#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\# | 100\%
+liblapacke-3.8.0     | 10 KB     | \#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\# | 100\%
+libopenblas-0.3.6    | 7.7 MB    | \#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\# | 100\%
+numpy-1.17.3         | 5.2 MB    | \#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\# | 100\%
+scipy-1.4.1          | 18.9 MB   | \#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\# | 100\%
+libcblas-3.8.0       | 10 KB     | \#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\# | 100\%
+libblas-3.8.0        | 10 KB     | \#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\# | 100\%
+blas-2.11            | 10 KB     | \#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\# | 100\%
+Preparing transaction: done
+Verifying transaction: done
+Executing transaction: done
+Folium installed and imported!
+    \end{Verbatim}
+
+    Generating the world map is straigtforward in \textbf{Folium}. You
+simply create a \textbf{Folium} \emph{Map} object and then you display
+it. What is attactive about \textbf{Folium} maps is that they are
+interactive, so you can zoom into any region of interest despite the
+initial zoom level.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{3}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} define the world map}
+\PY{n}{world\PYZus{}map} \PY{o}{=} \PY{n}{folium}\PY{o}{.}\PY{n}{Map}\PY{p}{(}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} display world map}
+\PY{n}{world\PYZus{}map}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{3}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+<folium.folium.Map at 0x7faf38030eb8>
+\end{Verbatim}
+\end{tcolorbox}
+        
+    Go ahead. Try zooming in and out of the rendered map above.
+
+    You can customize this default definition of the world map by specifying
+the centre of your map and the intial zoom level.
+
+All locations on a map are defined by their respective \emph{Latitude}
+and \emph{Longitude} values. So you can create a map and pass in a
+center of \emph{Latitude} and \emph{Longitude} values of \textbf{{[}0,
+0{]}}.
+
+For a defined center, you can also define the intial zoom level into
+that location when the map is rendered. \textbf{The higher the zoom
+level the more the map is zoomed into the center}.
+
+Let's create a map centered around Canada and play with the zoom level
+to see how it affects the rendered map.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{4}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} define the world map centered around Canada with a low zoom level}
+\PY{n}{world\PYZus{}map} \PY{o}{=} \PY{n}{folium}\PY{o}{.}\PY{n}{Map}\PY{p}{(}\PY{n}{location}\PY{o}{=}\PY{p}{[}\PY{l+m+mf}{56.130}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{l+m+mf}{106.35}\PY{p}{]}\PY{p}{,} \PY{n}{zoom\PYZus{}start}\PY{o}{=}\PY{l+m+mi}{4}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} display world map}
+\PY{n}{world\PYZus{}map}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{4}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+<folium.folium.Map at 0x7faf1a0ab4e0>
+\end{Verbatim}
+\end{tcolorbox}
+        
+    Let's create the map again with a higher zoom level
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{5}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} define the world map centered around Canada with a higher zoom level}
+\PY{n}{world\PYZus{}map} \PY{o}{=} \PY{n}{folium}\PY{o}{.}\PY{n}{Map}\PY{p}{(}\PY{n}{location}\PY{o}{=}\PY{p}{[}\PY{l+m+mf}{56.130}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{l+m+mf}{106.35}\PY{p}{]}\PY{p}{,} \PY{n}{zoom\PYZus{}start}\PY{o}{=}\PY{l+m+mi}{8}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} display world map}
+\PY{n}{world\PYZus{}map}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{5}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+<folium.folium.Map at 0x7faf1a03b438>
+\end{Verbatim}
+\end{tcolorbox}
+        
+    As you can see, the higher the zoom level the more the map is zoomed
+into the given center.
+
+    \textbf{Question}: Create a map of Mexico with a zoom level of 4.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{6}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{} type your answer here}
+\PY{n}{mexico\PYZus{}latitude} \PY{o}{=} \PY{l+m+mf}{23.6345} 
+\PY{n}{mexico\PYZus{}longitude} \PY{o}{=} \PY{o}{\PYZhy{}}\PY{l+m+mf}{102.5528}
+\PY{n}{mexico\PYZus{}map} \PY{o}{=} \PY{n}{folium}\PY{o}{.}\PY{n}{Map}\PY{p}{(}\PY{n}{location}\PY{o}{=}\PY{p}{[}\PY{n}{mexico\PYZus{}latitude}\PY{p}{,} \PY{n}{mexico\PYZus{}longitude}\PY{p}{]}\PY{p}{,} \PY{n}{zoom\PYZus{}start}\PY{o}{=}\PY{l+m+mi}{4}\PY{p}{)}
+\PY{n}{mexico\PYZus{}map}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{6}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+<folium.folium.Map at 0x7faf1a040438>
+\end{Verbatim}
+\end{tcolorbox}
+        
+    Double-click \textbf{here} for the solution.
+
+    Another cool feature of \textbf{Folium} is that you can generate
+different map styles.
+
+    \hypertarget{a.-stamen-toner-maps}{%
+\subsubsection{A. Stamen Toner Maps}\label{a.-stamen-toner-maps}}
+
+These are high-contrast B+W (black and white) maps. They are perfect for
+data mashups and exploring river meanders and coastal zones.
+
+    Let's create a Stamen Toner map of canada with a zoom level of 4.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{7}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} create a Stamen Toner map of the world centered around Canada}
+\PY{n}{world\PYZus{}map} \PY{o}{=} \PY{n}{folium}\PY{o}{.}\PY{n}{Map}\PY{p}{(}\PY{n}{location}\PY{o}{=}\PY{p}{[}\PY{l+m+mf}{56.130}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{l+m+mf}{106.35}\PY{p}{]}\PY{p}{,} \PY{n}{zoom\PYZus{}start}\PY{o}{=}\PY{l+m+mi}{4}\PY{p}{,} \PY{n}{tiles}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Stamen Toner}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} display map}
+\PY{n}{world\PYZus{}map}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{7}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+<folium.folium.Map at 0x7faf1a040390>
+\end{Verbatim}
+\end{tcolorbox}
+        
+    Feel free to zoom in and out to see how this style compares to the
+default one.
+
+    \hypertarget{b.-stamen-terrain-maps}{%
+\subsubsection{B. Stamen Terrain Maps}\label{b.-stamen-terrain-maps}}
+
+These are maps that feature hill shading and natural vegetation colors.
+They showcase advanced labeling and linework generalization of
+dual-carriageway roads.
+
+    Let's create a Stamen Terrain map of Canada with zoom level 4.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{8}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} create a Stamen Toner map of the world centered around Canada}
+\PY{n}{world\PYZus{}map} \PY{o}{=} \PY{n}{folium}\PY{o}{.}\PY{n}{Map}\PY{p}{(}\PY{n}{location}\PY{o}{=}\PY{p}{[}\PY{l+m+mf}{56.130}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{l+m+mf}{106.35}\PY{p}{]}\PY{p}{,} \PY{n}{zoom\PYZus{}start}\PY{o}{=}\PY{l+m+mi}{4}\PY{p}{,} \PY{n}{tiles}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Stamen Terrain}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} display map}
+\PY{n}{world\PYZus{}map}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{8}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+<folium.folium.Map at 0x7faf1a065128>
+\end{Verbatim}
+\end{tcolorbox}
+        
+    Feel free to zoom in and out to see how this style compares to Stamen
+Toner and the default style.
+
+    \hypertarget{c.-mapbox-bright-maps}{%
+\subsubsection{C. Mapbox Bright Maps}\label{c.-mapbox-bright-maps}}
+
+These are maps that quite similar to the default style, except that the
+borders are not visible with a low zoom level. Furthermore, unlike the
+default style where country names are displayed in each country's native
+language, \emph{Mapbox Bright} style displays all country names in
+English.
+
+    Let's create a world map with this style.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{10}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} create a world map with a Mapbox Bright style.}
+\PY{n}{world\PYZus{}map} \PY{o}{=} \PY{n}{folium}\PY{o}{.}\PY{n}{Map}\PY{p}{(}\PY{n}{tiles}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Mapbox Bright}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} display the map}
+\PY{n}{world\PYZus{}map}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{10}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+<folium.folium.Map at 0x7faf1a003c50>
+\end{Verbatim}
+\end{tcolorbox}
+        
+    Zoom in and notice how the borders start showing as you zoom in, and the
+displayed country names are in English.
+
+    \textbf{Question}: Create a map of Mexico to visualize its hill shading
+and natural vegetation. Use a zoom level of 6.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{11}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{} type your answer here}
+
+\PY{n}{mexico\PYZus{}map} \PY{o}{=} \PY{n}{folium}\PY{o}{.}\PY{n}{Map}\PY{p}{(}\PY{n}{location}\PY{o}{=}\PY{p}{[}\PY{n}{mexico\PYZus{}latitude}\PY{p}{,} \PY{n}{mexico\PYZus{}longitude}\PY{p}{]}\PY{p}{,} \PY{n}{zoom\PYZus{}start}\PY{o}{=}\PY{l+m+mi}{4}\PY{p}{,}  \PY{n}{tiles}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Stamen Terrain}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{mexico\PYZus{}map}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{11}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+<folium.folium.Map at 0x7faf19feff60>
+\end{Verbatim}
+\end{tcolorbox}
+        
+    Double-click \textbf{here} for the solution.
+
+    \hypertarget{maps-with-markers}{%
+\section{\texorpdfstring{Maps with Markers
+}{Maps with Markers }}\label{maps-with-markers}}
+
+    Let's download and import the data on police department incidents using
+\emph{pandas} \texttt{read\_csv()} method.
+
+    Download the dataset and read it into a \emph{pandas} dataframe:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{12}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{df\PYZus{}incidents} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{https://s3\PYZhy{}api.us\PYZhy{}geo.objectstorage.softlayer.net/cf\PYZhy{}courses\PYZhy{}data/CognitiveClass/DV0101EN/labs/Data\PYZus{}Files/Police\PYZus{}Department\PYZus{}Incidents\PYZus{}\PYZhy{}\PYZus{}Previous\PYZus{}Year\PYZus{}\PYZus{}2016\PYZus{}.csv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Dataset downloaded and read into a pandas dataframe!}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Dataset downloaded and read into a pandas dataframe!
+    \end{Verbatim}
+
+    Let's take a look at the first five items in our dataset.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{13}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{df\PYZus{}incidents}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{13}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+   IncidntNum      Category                                        Descript  \textbackslash{}
+0   120058272   WEAPON LAWS                       POSS OF PROHIBITED WEAPON
+1   120058272   WEAPON LAWS  FIREARM, LOADED, IN VEHICLE, POSSESSION OR USE
+2   141059263      WARRANTS                                  WARRANT ARREST
+3   160013662  NON-CRIMINAL                                   LOST PROPERTY
+4   160002740  NON-CRIMINAL                                   LOST PROPERTY
+
+  DayOfWeek                    Date   Time  PdDistrict      Resolution  \textbackslash{}
+0    Friday  01/29/2016 12:00:00 AM  11:00    SOUTHERN  ARREST, BOOKED
+1    Friday  01/29/2016 12:00:00 AM  11:00    SOUTHERN  ARREST, BOOKED
+2    Monday  04/25/2016 12:00:00 AM  14:59     BAYVIEW  ARREST, BOOKED
+3   Tuesday  01/05/2016 12:00:00 AM  23:50  TENDERLOIN            NONE
+4    Friday  01/01/2016 12:00:00 AM  00:30     MISSION            NONE
+
+                  Address           X          Y  \textbackslash{}
+0  800 Block of BRYANT ST -122.403405  37.775421
+1  800 Block of BRYANT ST -122.403405  37.775421
+2   KEITH ST / SHAFTER AV -122.388856  37.729981
+3  JONES ST / OFARRELL ST -122.412971  37.785788
+4    16TH ST / MISSION ST -122.419672  37.765050
+
+                                Location            PdId
+0   (37.775420706711, -122.403404791479)  12005827212120
+1   (37.775420706711, -122.403404791479)  12005827212168
+2  (37.7299809672996, -122.388856204292)  14105926363010
+3  (37.7857883766888, -122.412970537591)  16001366271000
+4  (37.7650501214668, -122.419671780296)  16000274071000
+\end{Verbatim}
+\end{tcolorbox}
+        
+    So each row consists of 13 features: \textgreater{} 1.
+\textbf{IncidntNum}: Incident Number \textgreater{} 2.
+\textbf{Category}: Category of crime or incident \textgreater{} 3.
+\textbf{Descript}: Description of the crime or incident \textgreater{}
+4. \textbf{DayOfWeek}: The day of week on which the incident occurred
+\textgreater{} 5. \textbf{Date}: The Date on which the incident occurred
+\textgreater{} 6. \textbf{Time}: The time of day on which the incident
+occurred \textgreater{} 7. \textbf{PdDistrict}: The police department
+district \textgreater{} 8. \textbf{Resolution}: The resolution of the
+crime in terms whether the perpetrator was arrested or not
+\textgreater{} 9. \textbf{Address}: The closest address to where the
+incident took place \textgreater{} 10. \textbf{X}: The longitude value
+of the crime location \textgreater{} 11. \textbf{Y}: The latitude value
+of the crime location \textgreater{} 12. \textbf{Location}: A tuple of
+the latitude and the longitude values \textgreater{} 13. \textbf{PdId}:
+The police department ID
+
+    Let's find out how many entries there are in our dataset.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{14}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{df\PYZus{}incidents}\PY{o}{.}\PY{n}{shape}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{14}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+(150500, 13)
+\end{Verbatim}
+\end{tcolorbox}
+        
+    So the dataframe consists of 150,500 crimes, which took place in the
+year 2016. In order to reduce computational cost, let's just work with
+the first 100 incidents in this dataset.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{15}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} get the first 100 crimes in the df\PYZus{}incidents dataframe}
+\PY{n}{limit} \PY{o}{=} \PY{l+m+mi}{100}
+\PY{n}{df\PYZus{}incidents} \PY{o}{=} \PY{n}{df\PYZus{}incidents}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{:}\PY{n}{limit}\PY{p}{,} \PY{p}{:}\PY{p}{]}
+\end{Verbatim}
+\end{tcolorbox}
+
+    Let's confirm that our dataframe now consists only of 100 crimes.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{16}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{df\PYZus{}incidents}\PY{o}{.}\PY{n}{shape}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{16}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+(100, 13)
+\end{Verbatim}
+\end{tcolorbox}
+        
+    Now that we reduced the data a little bit, let's visualize where these
+crimes took place in the city of San Francisco. We will use the default
+style and we will initialize the zoom level to 12.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{17}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} San Francisco latitude and longitude values}
+\PY{n}{latitude} \PY{o}{=} \PY{l+m+mf}{37.77}
+\PY{n}{longitude} \PY{o}{=} \PY{o}{\PYZhy{}}\PY{l+m+mf}{122.42}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{18}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} create map and display it}
+\PY{n}{sanfran\PYZus{}map} \PY{o}{=} \PY{n}{folium}\PY{o}{.}\PY{n}{Map}\PY{p}{(}\PY{n}{location}\PY{o}{=}\PY{p}{[}\PY{n}{latitude}\PY{p}{,} \PY{n}{longitude}\PY{p}{]}\PY{p}{,} \PY{n}{zoom\PYZus{}start}\PY{o}{=}\PY{l+m+mi}{12}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} display the map of San Francisco}
+\PY{n}{sanfran\PYZus{}map}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{18}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+<folium.folium.Map at 0x7faf199daeb8>
+\end{Verbatim}
+\end{tcolorbox}
+        
+    Now let's superimpose the locations of the crimes onto the map. The way
+to do that in \textbf{Folium} is to create a \emph{feature group} with
+its own features and style and then add it to the sanfran\_map.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{19}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} instantiate a feature group for the incidents in the dataframe}
+\PY{n}{incidents} \PY{o}{=} \PY{n}{folium}\PY{o}{.}\PY{n}{map}\PY{o}{.}\PY{n}{FeatureGroup}\PY{p}{(}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} loop through the 100 crimes and add each to the incidents feature group}
+\PY{k}{for} \PY{n}{lat}\PY{p}{,} \PY{n}{lng}\PY{p}{,} \PY{o+ow}{in} \PY{n+nb}{zip}\PY{p}{(}\PY{n}{df\PYZus{}incidents}\PY{o}{.}\PY{n}{Y}\PY{p}{,} \PY{n}{df\PYZus{}incidents}\PY{o}{.}\PY{n}{X}\PY{p}{)}\PY{p}{:}
+    \PY{n}{incidents}\PY{o}{.}\PY{n}{add\PYZus{}child}\PY{p}{(}
+        \PY{n}{folium}\PY{o}{.}\PY{n}{features}\PY{o}{.}\PY{n}{CircleMarker}\PY{p}{(}
+            \PY{p}{[}\PY{n}{lat}\PY{p}{,} \PY{n}{lng}\PY{p}{]}\PY{p}{,}
+            \PY{n}{radius}\PY{o}{=}\PY{l+m+mi}{5}\PY{p}{,} \PY{c+c1}{\PYZsh{} define how big you want the circle markers to be}
+            \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{yellow}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+            \PY{n}{fill}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,}
+            \PY{n}{fill\PYZus{}color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{blue}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+            \PY{n}{fill\PYZus{}opacity}\PY{o}{=}\PY{l+m+mf}{0.6}
+        \PY{p}{)}
+    \PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} add incidents to map}
+\PY{n}{sanfran\PYZus{}map}\PY{o}{.}\PY{n}{add\PYZus{}child}\PY{p}{(}\PY{n}{incidents}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{19}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+<folium.folium.Map at 0x7faf199daeb8>
+\end{Verbatim}
+\end{tcolorbox}
+        
+    You can also add some pop-up text that would get displayed when you
+hover over a marker. Let's make each marker display the category of the
+crime when hovered over.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{20}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} instantiate a feature group for the incidents in the dataframe}
+\PY{n}{incidents} \PY{o}{=} \PY{n}{folium}\PY{o}{.}\PY{n}{map}\PY{o}{.}\PY{n}{FeatureGroup}\PY{p}{(}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} loop through the 100 crimes and add each to the incidents feature group}
+\PY{k}{for} \PY{n}{lat}\PY{p}{,} \PY{n}{lng}\PY{p}{,} \PY{o+ow}{in} \PY{n+nb}{zip}\PY{p}{(}\PY{n}{df\PYZus{}incidents}\PY{o}{.}\PY{n}{Y}\PY{p}{,} \PY{n}{df\PYZus{}incidents}\PY{o}{.}\PY{n}{X}\PY{p}{)}\PY{p}{:}
+    \PY{n}{incidents}\PY{o}{.}\PY{n}{add\PYZus{}child}\PY{p}{(}
+        \PY{n}{folium}\PY{o}{.}\PY{n}{features}\PY{o}{.}\PY{n}{CircleMarker}\PY{p}{(}
+            \PY{p}{[}\PY{n}{lat}\PY{p}{,} \PY{n}{lng}\PY{p}{]}\PY{p}{,}
+            \PY{n}{radius}\PY{o}{=}\PY{l+m+mi}{5}\PY{p}{,} \PY{c+c1}{\PYZsh{} define how big you want the circle markers to be}
+            \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{yellow}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+            \PY{n}{fill}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,}
+            \PY{n}{fill\PYZus{}color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{blue}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+            \PY{n}{fill\PYZus{}opacity}\PY{o}{=}\PY{l+m+mf}{0.6}
+        \PY{p}{)}
+    \PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} add pop\PYZhy{}up text to each marker on the map}
+\PY{n}{latitudes} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n}{df\PYZus{}incidents}\PY{o}{.}\PY{n}{Y}\PY{p}{)}
+\PY{n}{longitudes} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n}{df\PYZus{}incidents}\PY{o}{.}\PY{n}{X}\PY{p}{)}
+\PY{n}{labels} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n}{df\PYZus{}incidents}\PY{o}{.}\PY{n}{Category}\PY{p}{)}
+
+\PY{k}{for} \PY{n}{lat}\PY{p}{,} \PY{n}{lng}\PY{p}{,} \PY{n}{label} \PY{o+ow}{in} \PY{n+nb}{zip}\PY{p}{(}\PY{n}{latitudes}\PY{p}{,} \PY{n}{longitudes}\PY{p}{,} \PY{n}{labels}\PY{p}{)}\PY{p}{:}
+    \PY{n}{folium}\PY{o}{.}\PY{n}{Marker}\PY{p}{(}\PY{p}{[}\PY{n}{lat}\PY{p}{,} \PY{n}{lng}\PY{p}{]}\PY{p}{,} \PY{n}{popup}\PY{o}{=}\PY{n}{label}\PY{p}{)}\PY{o}{.}\PY{n}{add\PYZus{}to}\PY{p}{(}\PY{n}{sanfran\PYZus{}map}\PY{p}{)}    
+    
+\PY{c+c1}{\PYZsh{} add incidents to map}
+\PY{n}{sanfran\PYZus{}map}\PY{o}{.}\PY{n}{add\PYZus{}child}\PY{p}{(}\PY{n}{incidents}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{20}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+<folium.folium.Map at 0x7faf199daeb8>
+\end{Verbatim}
+\end{tcolorbox}
+        
+    Isn't this really cool? Now you are able to know what crime category
+occurred at each marker.
+
+If you find the map to be so congested will all these markers, there are
+two remedies to this problem. The simpler solution is to remove these
+location markers and just add the text to the circle markers themselves
+as follows:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{21}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} create map and display it}
+\PY{n}{sanfran\PYZus{}map} \PY{o}{=} \PY{n}{folium}\PY{o}{.}\PY{n}{Map}\PY{p}{(}\PY{n}{location}\PY{o}{=}\PY{p}{[}\PY{n}{latitude}\PY{p}{,} \PY{n}{longitude}\PY{p}{]}\PY{p}{,} \PY{n}{zoom\PYZus{}start}\PY{o}{=}\PY{l+m+mi}{12}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} loop through the 100 crimes and add each to the map}
+\PY{k}{for} \PY{n}{lat}\PY{p}{,} \PY{n}{lng}\PY{p}{,} \PY{n}{label} \PY{o+ow}{in} \PY{n+nb}{zip}\PY{p}{(}\PY{n}{df\PYZus{}incidents}\PY{o}{.}\PY{n}{Y}\PY{p}{,} \PY{n}{df\PYZus{}incidents}\PY{o}{.}\PY{n}{X}\PY{p}{,} \PY{n}{df\PYZus{}incidents}\PY{o}{.}\PY{n}{Category}\PY{p}{)}\PY{p}{:}
+    \PY{n}{folium}\PY{o}{.}\PY{n}{features}\PY{o}{.}\PY{n}{CircleMarker}\PY{p}{(}
+        \PY{p}{[}\PY{n}{lat}\PY{p}{,} \PY{n}{lng}\PY{p}{]}\PY{p}{,}
+        \PY{n}{radius}\PY{o}{=}\PY{l+m+mi}{5}\PY{p}{,} \PY{c+c1}{\PYZsh{} define how big you want the circle markers to be}
+        \PY{n}{color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{yellow}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+        \PY{n}{fill}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,}
+        \PY{n}{popup}\PY{o}{=}\PY{n}{label}\PY{p}{,}
+        \PY{n}{fill\PYZus{}color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{blue}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+        \PY{n}{fill\PYZus{}opacity}\PY{o}{=}\PY{l+m+mf}{0.6}
+    \PY{p}{)}\PY{o}{.}\PY{n}{add\PYZus{}to}\PY{p}{(}\PY{n}{sanfran\PYZus{}map}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} show map}
+\PY{n}{sanfran\PYZus{}map}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{21}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+<folium.folium.Map at 0x7faf153f4ef0>
+\end{Verbatim}
+\end{tcolorbox}
+        
+    The other proper remedy is to group the markers into different clusters.
+Each cluster is then represented by the number of crimes in each
+neighborhood. These clusters can be thought of as pockets of San
+Francisco which you can then analyze separately.
+
+To implement this, we start off by instantiating a \emph{MarkerCluster}
+object and adding all the data points in the dataframe to this object.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{22}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{from} \PY{n+nn}{folium} \PY{k+kn}{import} \PY{n}{plugins}
+
+\PY{c+c1}{\PYZsh{} let\PYZsq{}s start again with a clean copy of the map of San Francisco}
+\PY{n}{sanfran\PYZus{}map} \PY{o}{=} \PY{n}{folium}\PY{o}{.}\PY{n}{Map}\PY{p}{(}\PY{n}{location} \PY{o}{=} \PY{p}{[}\PY{n}{latitude}\PY{p}{,} \PY{n}{longitude}\PY{p}{]}\PY{p}{,} \PY{n}{zoom\PYZus{}start} \PY{o}{=} \PY{l+m+mi}{12}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} instantiate a mark cluster object for the incidents in the dataframe}
+\PY{n}{incidents} \PY{o}{=} \PY{n}{plugins}\PY{o}{.}\PY{n}{MarkerCluster}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{add\PYZus{}to}\PY{p}{(}\PY{n}{sanfran\PYZus{}map}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} loop through the dataframe and add each data point to the mark cluster}
+\PY{k}{for} \PY{n}{lat}\PY{p}{,} \PY{n}{lng}\PY{p}{,} \PY{n}{label}\PY{p}{,} \PY{o+ow}{in} \PY{n+nb}{zip}\PY{p}{(}\PY{n}{df\PYZus{}incidents}\PY{o}{.}\PY{n}{Y}\PY{p}{,} \PY{n}{df\PYZus{}incidents}\PY{o}{.}\PY{n}{X}\PY{p}{,} \PY{n}{df\PYZus{}incidents}\PY{o}{.}\PY{n}{Category}\PY{p}{)}\PY{p}{:}
+    \PY{n}{folium}\PY{o}{.}\PY{n}{Marker}\PY{p}{(}
+        \PY{n}{location}\PY{o}{=}\PY{p}{[}\PY{n}{lat}\PY{p}{,} \PY{n}{lng}\PY{p}{]}\PY{p}{,}
+        \PY{n}{icon}\PY{o}{=}\PY{k+kc}{None}\PY{p}{,}
+        \PY{n}{popup}\PY{o}{=}\PY{n}{label}\PY{p}{,}
+    \PY{p}{)}\PY{o}{.}\PY{n}{add\PYZus{}to}\PY{p}{(}\PY{n}{incidents}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} display map}
+\PY{n}{sanfran\PYZus{}map}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{22}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+<folium.folium.Map at 0x7faf144f2828>
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{24}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{!}conda install \PYZhy{}c anaconda xlrd \PYZhy{}\PYZhy{}yes
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Solving environment: done
+
+
+==> WARNING: A newer version of conda exists. <==
+  current version: 4.5.11
+  latest version: 4.8.0
+
+Please update conda by running
+
+    \$ conda update -n base -c defaults conda
+
+
+
+\#\# Package Plan \#\#
+
+  environment location: /home/jupyterlab/conda/envs/python
+
+  added / updated specs:
+    - xlrd
+
+
+The following packages will be downloaded:
+
+    package                    |            build
+    ---------------------------|-----------------
+    openssl-1.1.1              |       h7b6447c\_0         5.0 MB  anaconda
+    xlrd-1.2.0                 |             py\_0         108 KB  anaconda
+    certifi-2019.11.28         |           py36\_0         156 KB  anaconda
+    ------------------------------------------------------------
+                                           Total:         5.3 MB
+
+The following packages will be UPDATED:
+
+    certifi: 2019.11.28-py36\_0 conda-forge --> 2019.11.28-py36\_0 anaconda
+    openssl: 1.1.1d-h516909a\_0 conda-forge --> 1.1.1-h7b6447c\_0  anaconda
+    xlrd:    1.1.0-py37\_1                  --> 1.2.0-py\_0        anaconda
+
+
+Downloading and Extracting Packages
+openssl-1.1.1        | 5.0 MB    | \#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\# | 100\%
+xlrd-1.2.0           | 108 KB    | \#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\# | 100\%
+certifi-2019.11.28   | 156 KB    | \#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\#\# | 100\%
+Preparing transaction: done
+Verifying transaction: done
+Executing transaction: done
+    \end{Verbatim}
+
+    Notice how when you zoom out all the way, all markers are grouped into
+one cluster, \emph{the global cluster}, of 100 markers or crimes, which
+is the total number of crimes in our dataframe. Once you start zooming
+in, the \emph{global cluster} will start breaking up into smaller
+clusters. Zooming in all the way will result in individual markers.
+
+    \hypertarget{choropleth-maps}{%
+\section{\texorpdfstring{Choropleth Maps
+}{Choropleth Maps }}\label{choropleth-maps}}
+
+A \texttt{Choropleth} map is a thematic map in which areas are shaded or
+patterned in proportion to the measurement of the statistical variable
+being displayed on the map, such as population density or per-capita
+income. The choropleth map provides an easy way to visualize how a
+measurement varies across a geographic area or it shows the level of
+variability within a region. Below is a \texttt{Choropleth} map of the
+US depicting the population by square mile per state.
+
+    Now, let's create our own \texttt{Choropleth} map of the world depicting
+immigration from various countries to Canada.
+
+Let's first download and import our primary Canadian immigration dataset
+using \emph{pandas} \texttt{read\_excel()} method. Normally, before we
+can do that, we would need to download a module which \emph{pandas}
+requires to read in excel files. This module is \textbf{xlrd}. For your
+convenience, we have pre-installed this module, so you would not have to
+worry about that. Otherwise, you would need to run the following line of
+code to install the \textbf{xlrd} module:
+
+\begin{verbatim}
+!conda install -c anaconda xlrd --yes
+\end{verbatim}
+
+    Download the dataset and read it into a \emph{pandas} dataframe:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{25}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{df\PYZus{}can} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}excel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{https://s3\PYZhy{}api.us\PYZhy{}geo.objectstorage.softlayer.net/cf\PYZhy{}courses\PYZhy{}data/CognitiveClass/DV0101EN/labs/Data\PYZus{}Files/Canada.xlsx}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                     \PY{n}{sheet\PYZus{}name}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Canada by Citizenship}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+                     \PY{n}{skiprows}\PY{o}{=}\PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{20}\PY{p}{)}\PY{p}{,}
+                     \PY{n}{skipfooter}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{)}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Data downloaded and read into a dataframe!}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Data downloaded and read into a dataframe!
+    \end{Verbatim}
+
+    Let's take a look at the first five items in our dataset.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{26}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{df\PYZus{}can}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{26}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+         Type    Coverage          OdName  AREA AreaName   REG  \textbackslash{}
+0  Immigrants  Foreigners     Afghanistan   935     Asia  5501
+1  Immigrants  Foreigners         Albania   908   Europe   925
+2  Immigrants  Foreigners         Algeria   903   Africa   912
+3  Immigrants  Foreigners  American Samoa   909  Oceania   957
+4  Immigrants  Foreigners         Andorra   908   Europe   925
+
+           RegName  DEV             DevName  1980  {\ldots}  2004  2005  2006  \textbackslash{}
+0    Southern Asia  902  Developing regions    16  {\ldots}  2978  3436  3009
+1  Southern Europe  901   Developed regions     1  {\ldots}  1450  1223   856
+2  Northern Africa  902  Developing regions    80  {\ldots}  3616  3626  4807
+3        Polynesia  902  Developing regions     0  {\ldots}     0     0     1
+4  Southern Europe  901   Developed regions     0  {\ldots}     0     0     1
+
+   2007  2008  2009  2010  2011  2012  2013
+0  2652  2111  1746  1758  2203  2635  2004
+1   702   560   716   561   539   620   603
+2  3623  4005  5393  4752  4325  3774  4331
+3     0     0     0     0     0     0     0
+4     1     0     0     0     0     1     1
+
+[5 rows x 43 columns]
+\end{Verbatim}
+\end{tcolorbox}
+        
+    Let's find out how many entries there are in our dataset.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{27}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} print the dimensions of the dataframe}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{df\PYZus{}can}\PY{o}{.}\PY{n}{shape}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+(195, 43)
+    \end{Verbatim}
+
+    Clean up data. We will make some modifications to the original dataset
+to make it easier to create our visualizations. Refer to
+\emph{Introduction to Matplotlib and Line Plots} and \emph{Area Plots,
+Histograms, and Bar Plots} notebooks for a detailed description of this
+preprocessing.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{28}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} clean up the dataset to remove unnecessary columns (eg. REG) }
+\PY{n}{df\PYZus{}can}\PY{o}{.}\PY{n}{drop}\PY{p}{(}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{AREA}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{REG}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{DEV}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Type}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Coverage}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{inplace}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} let\PYZsq{}s rename the columns so that they make sense}
+\PY{n}{df\PYZus{}can}\PY{o}{.}\PY{n}{rename}\PY{p}{(}\PY{n}{columns}\PY{o}{=}\PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{OdName}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Country}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{AreaName}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Continent}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{RegName}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Region}\PY{l+s+s1}{\PYZsq{}}\PY{p}{\PYZcb{}}\PY{p}{,} \PY{n}{inplace}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} for sake of consistency, let\PYZsq{}s also make all column labels of type string}
+\PY{n}{df\PYZus{}can}\PY{o}{.}\PY{n}{columns} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n+nb}{map}\PY{p}{(}\PY{n+nb}{str}\PY{p}{,} \PY{n}{df\PYZus{}can}\PY{o}{.}\PY{n}{columns}\PY{p}{)}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} add total column}
+\PY{n}{df\PYZus{}can}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Total}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{df\PYZus{}can}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} years that we will be using in this lesson \PYZhy{} useful for plotting later on}
+\PY{n}{years} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n+nb}{map}\PY{p}{(}\PY{n+nb}{str}\PY{p}{,} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1980}\PY{p}{,} \PY{l+m+mi}{2014}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print} \PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{data dimensions:}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{df\PYZus{}can}\PY{o}{.}\PY{n}{shape}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+data dimensions: (195, 39)
+    \end{Verbatim}
+
+    Let's take a look at the first five items of our cleaned dataframe.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{29}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{df\PYZus{}can}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{29}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+          Country Continent           Region             DevName  1980  1981  \textbackslash{}
+0     Afghanistan      Asia    Southern Asia  Developing regions    16    39
+1         Albania    Europe  Southern Europe   Developed regions     1     0
+2         Algeria    Africa  Northern Africa  Developing regions    80    67
+3  American Samoa   Oceania        Polynesia  Developing regions     0     1
+4         Andorra    Europe  Southern Europe   Developed regions     0     0
+
+   1982  1983  1984  1985  {\ldots}  2005  2006  2007  2008  2009  2010  2011  \textbackslash{}
+0    39    47    71   340  {\ldots}  3436  3009  2652  2111  1746  1758  2203
+1     0     0     0     0  {\ldots}  1223   856   702   560   716   561   539
+2    71    69    63    44  {\ldots}  3626  4807  3623  4005  5393  4752  4325
+3     0     0     0     0  {\ldots}     0     1     0     0     0     0     0
+4     0     0     0     0  {\ldots}     0     1     1     0     0     0     0
+
+   2012  2013  Total
+0  2635  2004  58639
+1   620   603  15699
+2  3774  4331  69439
+3     0     0      6
+4     1     1     15
+
+[5 rows x 39 columns]
+\end{Verbatim}
+\end{tcolorbox}
+        
+    In order to create a \texttt{Choropleth} map, we need a GeoJSON file
+that defines the areas/boundaries of the state, county, or country that
+we are interested in. In our case, since we are endeavoring to create a
+world map, we want a GeoJSON that defines the boundaries of all world
+countries. For your convenience, we will be providing you with this
+file, so let's go ahead and download it. Let's name it
+\textbf{world\_countries.json}.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{30}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} download countries geojson file}
+\PY{o}{!}wget \PYZhy{}\PYZhy{}quiet https://s3\PYZhy{}api.us\PYZhy{}geo.objectstorage.softlayer.net/cf\PYZhy{}courses\PYZhy{}data/CognitiveClass/DV0101EN/labs/Data\PYZus{}Files/world\PYZus{}countries.json \PYZhy{}O world\PYZus{}countries.json
+    
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{GeoJSON file downloaded!}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+GeoJSON file downloaded!
+    \end{Verbatim}
+
+    Now that we have the GeoJSON file, let's create a world map, centered
+around \textbf{{[}0, 0{]}} \emph{latitude} and \emph{longitude} values,
+with an intial zoom level of 2, and using \emph{Mapbox Bright} style.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{31}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{world\PYZus{}geo} \PY{o}{=} \PY{l+s+sa}{r}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{world\PYZus{}countries.json}\PY{l+s+s1}{\PYZsq{}} \PY{c+c1}{\PYZsh{} geojson file}
+
+\PY{c+c1}{\PYZsh{} create a plain world map}
+\PY{n}{world\PYZus{}map} \PY{o}{=} \PY{n}{folium}\PY{o}{.}\PY{n}{Map}\PY{p}{(}\PY{n}{location}\PY{o}{=}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n}{zoom\PYZus{}start}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{,} \PY{n}{tiles}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Mapbox Bright}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    And now to create a \texttt{Choropleth} map, we will use the
+\emph{choropleth} method with the following main parameters:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  geo\_data, which is the GeoJSON file.
+\item
+  data, which is the dataframe containing the data.
+\item
+  columns, which represents the columns in the dataframe that will be
+  used to create the \texttt{Choropleth} map.
+\item
+  key\_on, which is the key or variable in the GeoJSON file that
+  contains the name of the variable of interest. To determine that, you
+  will need to open the GeoJSON file using any text editor and note the
+  name of the key or variable that contains the name of the countries,
+  since the countries are our variable of interest. In this case,
+  \textbf{name} is the key in the GeoJSON file that contains the name of
+  the countries. Note that this key is case\_sensitive, so you need to
+  pass exactly as it exists in the GeoJSON file.
+\end{enumerate}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{32}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} generate choropleth map using the total immigration of each country to Canada from 1980 to 2013}
+\PY{n}{world\PYZus{}map}\PY{o}{.}\PY{n}{choropleth}\PY{p}{(}
+    \PY{n}{geo\PYZus{}data}\PY{o}{=}\PY{n}{world\PYZus{}geo}\PY{p}{,}
+    \PY{n}{data}\PY{o}{=}\PY{n}{df\PYZus{}can}\PY{p}{,}
+    \PY{n}{columns}\PY{o}{=}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Country}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Total}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,}
+    \PY{n}{key\PYZus{}on}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{feature.properties.name}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+    \PY{n}{fill\PYZus{}color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{YlOrRd}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} 
+    \PY{n}{fill\PYZus{}opacity}\PY{o}{=}\PY{l+m+mf}{0.7}\PY{p}{,} 
+    \PY{n}{line\PYZus{}opacity}\PY{o}{=}\PY{l+m+mf}{0.2}\PY{p}{,}
+    \PY{n}{legend\PYZus{}name}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Immigration to Canada}\PY{l+s+s1}{\PYZsq{}}
+\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} display map}
+\PY{n}{world\PYZus{}map}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{32}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+<folium.folium.Map at 0x7faf1942f898>
+\end{Verbatim}
+\end{tcolorbox}
+        
+    As per our \texttt{Choropleth} map legend, the darker the color of a
+country and the closer the color to red, the higher the number of
+immigrants from that country. Accordingly, the highest immigration over
+the course of 33 years (from 1980 to 2013) was from China, India, and
+the Philippines, followed by Poland, Pakistan, and interestingly, the
+US.
+
+    Notice how the legend is displaying a negative boundary or threshold.
+Let's fix that by defining our own thresholds and starting with 0
+instead of -6,918!
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{33}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{world\PYZus{}geo} \PY{o}{=} \PY{l+s+sa}{r}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{world\PYZus{}countries.json}\PY{l+s+s1}{\PYZsq{}}
+
+\PY{c+c1}{\PYZsh{} create a numpy array of length 6 and has linear spacing from the minium total immigration to the maximum total immigration}
+\PY{n}{threshold\PYZus{}scale} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linspace}\PY{p}{(}\PY{n}{df\PYZus{}can}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Total}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{min}\PY{p}{(}\PY{p}{)}\PY{p}{,}
+                              \PY{n}{df\PYZus{}can}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Total}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{p}{)}\PY{p}{,}
+                              \PY{l+m+mi}{6}\PY{p}{,} \PY{n}{dtype}\PY{o}{=}\PY{n+nb}{int}\PY{p}{)}
+\PY{n}{threshold\PYZus{}scale} \PY{o}{=} \PY{n}{threshold\PYZus{}scale}\PY{o}{.}\PY{n}{tolist}\PY{p}{(}\PY{p}{)} \PY{c+c1}{\PYZsh{} change the numpy array to a list}
+\PY{n}{threshold\PYZus{}scale}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]} \PY{o}{=} \PY{n}{threshold\PYZus{}scale}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]} \PY{o}{+} \PY{l+m+mi}{1} \PY{c+c1}{\PYZsh{} make sure that the last value of the list is greater than the maximum immigration}
+
+\PY{c+c1}{\PYZsh{} let Folium determine the scale.}
+\PY{n}{world\PYZus{}map} \PY{o}{=} \PY{n}{folium}\PY{o}{.}\PY{n}{Map}\PY{p}{(}\PY{n}{location}\PY{o}{=}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n}{zoom\PYZus{}start}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{,} \PY{n}{tiles}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Mapbox Bright}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{world\PYZus{}map}\PY{o}{.}\PY{n}{choropleth}\PY{p}{(}
+    \PY{n}{geo\PYZus{}data}\PY{o}{=}\PY{n}{world\PYZus{}geo}\PY{p}{,}
+    \PY{n}{data}\PY{o}{=}\PY{n}{df\PYZus{}can}\PY{p}{,}
+    \PY{n}{columns}\PY{o}{=}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Country}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Total}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,}
+    \PY{n}{key\PYZus{}on}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{feature.properties.name}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+    \PY{n}{threshold\PYZus{}scale}\PY{o}{=}\PY{n}{threshold\PYZus{}scale}\PY{p}{,}
+    \PY{n}{fill\PYZus{}color}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{YlOrRd}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} 
+    \PY{n}{fill\PYZus{}opacity}\PY{o}{=}\PY{l+m+mf}{0.7}\PY{p}{,} 
+    \PY{n}{line\PYZus{}opacity}\PY{o}{=}\PY{l+m+mf}{0.2}\PY{p}{,}
+    \PY{n}{legend\PYZus{}name}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Immigration to Canada}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}
+    \PY{n}{reset}\PY{o}{=}\PY{k+kc}{True}
+\PY{p}{)}
+\PY{n}{world\PYZus{}map}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{33}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+<folium.folium.Map at 0x7faf13ee9588>
+\end{Verbatim}
+\end{tcolorbox}
+        
+    Much better now! Feel free to play around with the data and perhaps
+create \texttt{Choropleth} maps for individuals years, or perhaps
+decades, and see how they compare with the entire period from 1980 to
+2013.
+
+    \hypertarget{thank-you-for-completing-this-lab}{%
+\subsubsection{Thank you for completing this
+lab!}\label{thank-you-for-completing-this-lab}}
+
+This notebook was created by
+\href{https://www.linkedin.com/in/aklson/}{Alex Aklson}. I hope you
+found this lab interesting and educational. Feel free to contact me if
+you have any questions!
+
+    This notebook is part of a course on \textbf{Coursera} called \emph{Data
+Visualization with Python}. If you accessed this notebook outside the
+course, you can take this course online by clicking
+\href{http://cocl.us/DV0101EN_Coursera_Week3_LAB2}{here}.
+
+    Copyright © 2019
+\href{https://cognitiveclass.ai/?utm_source=bducopyrightlink\&utm_medium=dswb\&utm_campaign=bdu}{Cognitive
+Class}. This notebook and its source code are released under the terms
+of the \href{https://bigdatauniversity.com/mit-license/}{MIT License}.
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+\end{document}
