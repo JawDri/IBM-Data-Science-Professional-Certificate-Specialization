@@ -1,0 +1,6 @@
+KEY CONCEPTS
+* Identify and Handle Missing Values
+* Data Formatting
+* Data Normalization
+* Binning
+* Indicator variables
